@@ -19,6 +19,15 @@ struct ListNode {
     
 };
 
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    
+};
+
 #include <vector>
 #include <unordered_map>
 #include <queue>
@@ -271,8 +280,8 @@ int reverse(int x) {
 //
 //  Note: You may not slant the container and n is at least 2.
 //
-//  Big(O) ->
-//  Memory ->
+//  Big(O) -> O(n), where n = size of the array
+//  Memory -> O(1)
 //
 //  ********* See StefanPochmann's post for a thorough explanation *********
 //
@@ -353,6 +362,62 @@ int climbStairs(int n) {
 }
 
 //
+//  75. Sort Colors - Medium
+//
+//  Given an array with n objects colored red, white or blue, sort them in-place so that objects
+//  of the same color are adjacents, with the colors in the order red, white and blue.
+//
+//  Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue
+//  respectively.
+//
+//  Note: You are not suppose to use the library's sort function for this problem.
+//
+//  Big(O) -> O(n), where n = size of the array
+//  Memory -> O(1)
+//
+
+void sortColors(vector<int>& nums) {
+    int red = 0, white = 0, blue = 0;
+    
+    for(int i = 0; i < nums.size(); i++){
+        if(nums[i] == 0) red++;
+        else if(nums[i] == 1) white++;
+        else blue++;
+    }
+    
+    for(int i = 0; i < nums.size(); i++){
+        if(i < red) nums[i] = 0;
+        else if(i < red + white) nums[i] = 1;
+        else nums[i] = 2;
+    }
+}
+
+//
+//  118. Pascal's Triangle - Easy
+//
+//  Given a non-negative integer numRows, generate the first numRows of Pascal's Triangle.
+//
+//  Big(O) -> O(n^2), where n = numRows
+//  Memory -> O(n^2), where n = numRows
+//
+
+vector<vector<int>> generate(int numRows){
+    if(numRows <= 0) return {};
+    vector<vector<int>> pascalsTriangle = {{1}};
+    
+    for(int i = 1; i < numRows; i++){
+        pascalsTriangle.push_back({1});
+        for(int j = 1; j < i; j++){
+            int sum = pascalsTriangle[i - 1][j] + pascalsTriangle[i - 1][j - 1];
+            pascalsTriangle[i].push_back(sum);
+        }
+        pascalsTriangle[i].push_back(1);
+    }
+    
+    return pascalsTriangle;
+}
+
+//
 //  169. Majority Element - Easy
 //
 //  Given an array of size n, find the majority element. The majority element is the
@@ -429,7 +494,7 @@ int numIslands(vector<vector<char>>& grid) {
 //  Note:
 //  You may assume k is always valid, 1 ≤ k ≤ array's length.
 //
-//  Big(O) -> O(n), where n = size of the array
+//  Big(O) -> O(nlogn), where n = size of the array
 //  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
 //
 
@@ -442,6 +507,35 @@ int findKthLargest(vector<int>& nums, int k) {
         }
     }
     return min_heap.top();
+}
+
+//
+//  230. Kth Smallest Element in a BST - Medium
+//
+//  Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+//
+//  Note:
+//  You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
+//
+//  Big(O) -> O(klogn), where n = size of the tree.
+//  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
+//
+
+void pushValuesToHeap(TreeNode* root, priority_queue<int> &max_heap, const int k){
+    if(root == nullptr) return;
+    max_heap.push(root->val);
+    if(max_heap.size() > k) max_heap.pop();
+    pushValuesToHeap(root->left, max_heap, k);
+    // since this is a binary tree, only look to the right if the size of max_heap ≤ k
+    if(max_heap.size() <= k) pushValuesToHeap(root->right, max_heap, k);
+}
+
+int kthSmallest(TreeNode* root, int k) {
+    priority_queue<int> max_heap;
+    
+    pushValuesToHeap(root, max_heap, k);
+    
+    return max_heap.top();
 }
 
 //
@@ -501,17 +595,17 @@ void reverseString(vector<char>& s) {
 //
 //  Note that it is the kth smallest element in the sorted order, not the kth distinct element.
 //
-//  Big(O) -> O(n^2), where n = size of the matrix.
+//  Big(O) -> O(klogn), where n = size of the matrix.
 //  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
 //
 
 int kthSmallest(vector<vector<int>>& matrix, int k) {
     priority_queue<int> max_heap;
-    for(int i = 0; i < matrix.size(); i++){
-        for(int j = 0; j < matrix[0].size(); j++){
-            max_heap.push(matrix[i][j]);
-            if(max_heap.size() > k){
-                max_heap.pop();
+    for(int i = matrix.size() - 1; i >= 0; i--){
+        for(int j = matrix[0].size() - 1; j >= 0; j--){
+            if(max_heap.size() < k || matrix[i][j] <= max_heap.top()){
+                max_heap.push(matrix[i][j]);
+                if(max_heap.size() > k) max_heap.pop();
             }
         }
     }
