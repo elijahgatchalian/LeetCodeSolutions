@@ -448,7 +448,7 @@ int majorityElement(vector<int>& nums){
 //  horizontally or vertically. You may assume all four edges of the grid are all
 //  surrounded by water.
 //
-//  Big(O) -> O((m+n)^2), where m and n are the size of the 2d array
+//  Big(O) -> O(n x m), where n and m are the dimensions of the 2d array
 //  Memory -> O(1)
 //
 //  ********* This solution originially passed all cases. When I retested it, it kept
@@ -458,14 +458,14 @@ int majorityElement(vector<int>& nums){
 //
 
 bool valid(const vector<vector<char>> grid, const int i, const int j){
-    return (i >= 0 && i < grid.size() && j >= 0 && j < grid[i].size() && grid[i][j] == '1');
+    return i >= 0 && i < grid.size() && j >= 0 && j < grid[i].size() && grid[i][j] == '1';
 }
 
 void findSurroundingLand(vector<vector<char>> &grid, const int i, const int j){
-    if(!valid(grid, i, j)){
-        return;
-    }
+    if(!valid(grid, i, j)) return;
+    
     grid[i][j] = '0'; // make sure not to visit this spot again
+    
     findSurroundingLand(grid, i, j + 1); // down
     findSurroundingLand(grid, i, j - 1); // up
     findSurroundingLand(grid, i - 1, j); // left
@@ -517,7 +517,7 @@ int findKthLargest(vector<int>& nums, int k) {
 //  Note:
 //  You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
 //
-//  Big(O) -> O(klogn), where n = size of the tree.
+//  Big(O) -> O(nlogn), where n = size of the tree.
 //  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
 //
 
@@ -595,7 +595,7 @@ void reverseString(vector<char>& s) {
 //
 //  Note that it is the kth smallest element in the sorted order, not the kth distinct element.
 //
-//  Big(O) -> O(klogn), where n = size of the matrix.
+//  Big(O) -> O(nlogn), where n = size of the matrix.
 //  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
 //
 
