@@ -24,7 +24,7 @@ struct TreeNode {
     int val;
     TreeNode *left;
     TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
     
 };
 
@@ -418,6 +418,27 @@ vector<vector<int>> generate(int numRows){
 }
 
 //
+//  119. Pascal's Triangle II - Easy
+//
+//  Given a non-negative index k where k ≤ 33, return the kth index row of the Pascal's triangle.
+//
+//  Note that the row index starts from 0.
+//
+//  Big(O) -> O(n), where n = rowIndex
+//  Memory -> O(n), where n = rowIndex
+//
+
+vector<int> getRow(int rowIndex) {
+    vector<int> pascalsTriangle(rowIndex + 1, 1); // set entire row to 1
+    long value = 1;
+    for (int i = 1; i < rowIndex; i++) {
+        value = value * (rowIndex - i + 1) / i;
+        pascalsTriangle[i] = (int)value;
+    }
+    return pascalsTriangle;
+}
+
+//
 //  169. Majority Element - Easy
 //
 //  Given an array of size n, find the majority element. The majority element is the
@@ -502,11 +523,32 @@ int findKthLargest(vector<int>& nums, int k) {
     priority_queue<int, vector<int>, greater<int>> min_heap;
     for(int i = 0; i < (int)nums.size(); i++){
         min_heap.push(nums[i]);
-        if(min_heap.size() > k){
-            min_heap.pop();
-        }
+        if(min_heap.size() > k) min_heap.pop();
     }
     return min_heap.top();
+}
+
+//
+//  217. Contains Duplicate
+//
+//  Given an array of integers, find if the array contains any duplicates.
+//
+//  Your function should return true if any value appears at least twice in the array, and it should
+//  return false if every element is distinct.
+//
+//  Big(O) -> O(n), where n = size of the array.
+//  Memory -> O(n), where n = size of the array.
+//
+
+bool containsDuplicate(vector<int>& nums) {
+    unordered_map<int, int> numbersToOccurence;
+    
+    for(int i = 0; i < nums.size(); i++){
+        numbersToOccurence[nums[i]]++;
+        if(numbersToOccurence[nums[i]] > 1) return true;
+    }
+    
+    return false;
 }
 
 //
@@ -564,6 +606,46 @@ bool searchMatrix(vector<vector<int>>& matrix, int target) {
 }
 
 //
+//  307. Range Sum Query - Mutable - Medium
+//
+//  Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j),
+//  inclusive.
+//
+//  The update(i, val) function modifies nums by updating the element at index i to val.
+//
+//  NumArray Big(O) -> O(n), where n = size of the array.
+//  update Big(O) -> O(n), where n = size of the array.
+//  sumRange Big(O) -> O(1)
+//  Memory -> O(n), where n = size of the array.
+//
+
+class NumArray {
+    vector<int> allSums, myArray;
+public:
+    NumArray(vector<int>& nums) {
+        myArray = nums;
+        int sum = 0;
+        for(int i = 0; i < myArray.size(); i++){
+            sum += myArray[i];
+            allSums.push_back(sum);
+        }
+    }
+    
+    void update(int i, int val) {
+        for(int index = i; index < allSums.size(); index++){
+            allSums[index] -= myArray[i];
+            allSums[index] += val;
+        }
+        myArray[i] = val;
+    }
+    
+    int sumRange(int i, int j) {
+        if(i == 0) return allSums[j];
+        else return allSums[j] - allSums[i - 1];
+    }
+};
+
+//
 //  344. Reverse String - Easy
 //
 //  Write a function that reverses a string. The input string is given as an array
@@ -601,8 +683,8 @@ void reverseString(vector<char>& s) {
 
 int kthSmallest(vector<vector<int>>& matrix, int k) {
     priority_queue<int> max_heap;
-    for(int i = matrix.size() - 1; i >= 0; i--){
-        for(int j = matrix[0].size() - 1; j >= 0; j--){
+    for(int i = (int)matrix.size() - 1; i >= 0; i--){
+        for(int j = (int)matrix[0].size() - 1; j >= 0; j--){
             if(max_heap.size() < k || matrix[i][j] <= max_heap.top()){
                 max_heap.push(matrix[i][j]);
                 if(max_heap.size() > k) max_heap.pop();
@@ -610,4 +692,84 @@ int kthSmallest(vector<vector<int>>& matrix, int k) {
         }
     }
     return max_heap.top();
+}
+
+//
+//  509. Fibonacci Number - Easy
+//
+//  The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence,
+//  such that each number is the sum of the two preceding numbers, starting from 0 and 1. That is,
+//
+//  F(0) = 0, F(1) = 1
+//  F(N) = F(N - 1) + F(N - 1), for N > 1
+//
+//  Big(O) -> O(n), where n = N input.
+//  Memory -> O(1)
+//
+
+int fib(int N) {
+    if(N == 0) return 0;
+    
+    int twoBefore = 0, oneBefore = 1;
+    int current = 1;
+    
+    for(int i = 1; i < N; i++){
+        current = oneBefore + twoBefore;
+        twoBefore = oneBefore;
+        oneBefore = current;
+    }
+    
+    return current;
+}
+
+//
+//  695. Max Area of Island
+//
+//  Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land)
+//  connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid
+//  are surrounded by water.
+//
+//  Find the maximum area of an island in the given 2D array. (If there is no island, the maximum
+//  area is 0.)
+//
+//  Big(O) -> O(n x m), where n and m are the dimensions of the grid.
+//  Memory -> O(1)
+//
+//  ********* This solution originially passed all cases. When I retested it, it kept
+//  failing on one test case. To fix this issue, replace the 'valid' function call in
+//  'countArea' with the criteria check used in 'valid'. I'm not sure why this
+//  caused the one test case to fail as the call to 'valid' should be constant. *********
+//
+
+bool valid(const vector<vector<int>> grid, const int x, const int y){
+    return x >= 0 && x < grid.size() && y >= 0 && y < grid[0].size() && grid[x][y] == 1;
+}
+
+int countArea(vector<vector<int>> &grid, int x, int y){
+    if(!valid(grid, x, y)) return 0;
+    
+    grid[x][y] = 0;
+    
+    int count = 1;
+    count += countArea(grid, x + 1, y);
+    count += countArea(grid, x - 1, y);
+    count += countArea(grid, x, y + 1);
+    count += countArea(grid, x, y - 1);
+    
+    return count;
+}
+
+int maxAreaOfIsland(vector<vector<int>>& grid) {
+    int maxArea = 0;
+    for(int i = 0; i < grid.size(); i++){
+        for(int j = 0; j < grid[0].size(); j++){
+            if(grid[i][j] == 1){
+                int count = countArea(grid, i, j);
+                if(count > maxArea){
+                    maxArea = count;
+                }
+            }
+        }
+    }
+    return maxArea;
 }
