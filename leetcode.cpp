@@ -739,7 +739,75 @@ int fib(int N) {
 }
 
 //
-//  695. Max Area of Island
+//  530. Minimum Absolute Difference in BST - Easy
+//
+//  Given a binary search tree with non-negative values, find the minimum absolute difference
+//  between values of any two nodes.
+//
+//  Big(O) -> O(nlogn), where n = size of the tree
+//  Memory -> O(n), where n = size of the tree
+//
+
+void traverseTree(const TreeNode* root, vector<int> &allNumbers){
+    if(root == nullptr) return;
+    
+    allNumbers.push_back(root->val);
+    
+    traverseTree(root->left, allNumbers);
+    traverseTree(root->right, allNumbers);
+}
+
+int getMinimumDifference(TreeNode* root) {
+    vector<int> allNumbers;
+    
+    traverseTree(root, allNumbers);
+    
+    sort(allNumbers.begin(), allNumbers.end());
+    
+    int min = INT_MAX;
+    
+    for(int i = 1; i < (int)allNumbers.size(); i++){
+        int absDiff = abs(allNumbers[i] - allNumbers[i - 1]);
+        if(absDiff <= 1) return absDiff;
+        else if(absDiff < min) min = absDiff;
+    }
+    
+    return min;
+}
+
+//
+//  643. Maximum Average Subarray I - Easy
+//
+//  Given an array consisting of n integers, find the contiguous subarray of given length k that
+//  has the maximum average value. And you need to output the maximum average value.
+//
+//  Big(O) -> O(n), where n = size of the array.
+//  Memory -> O(1)
+//
+
+double initialSum(const vector<int> &nums, const int k){
+    double sum = 0;
+    for(int i = 0; i < k; i++){
+        sum += nums[i];
+    }
+    return sum;
+}
+
+double findMaxAverage(vector<int>& nums, int k) {
+    double sum = initialSum(nums, k);
+    double max = sum; // Assume the initial sum is the maximum
+    
+    for(int i = 1; i < (int)nums.size() - k + 1; i++){
+        sum -= nums[i - 1];
+        sum += nums[i + k - 1];
+        if(sum > max) max = sum;
+    }
+    
+    return max/k;
+}
+
+//
+//  695. Max Area of Island - Medium
 //
 //  Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land)
 //  connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid
@@ -788,4 +856,140 @@ int maxAreaOfIsland(vector<vector<int>>& grid) {
         }
     }
     return maxArea;
+}
+
+//
+//  746. Min Cost Climbing Stairs - Easy
+//
+//  On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed).
+//
+//  Once you pay the cost you can either climb one or two steps. You need to find minimum cost
+//  to reach the top of the floor, and you can either start from the step with index 0, or
+//  the step with index 1.
+//
+//  Note:
+//  1. cost will have a length in range [2, 1000].
+//  2. Every cost[i] will be an integer in the range [0, 999].
+//
+//  Big(O) -> O(n), where n = size of the array.
+//  Memory -> O(1)
+//
+
+int minCostClimbingStairs(vector<int>& cost) {
+    int oneBefore = 0, twoBefore = 0;
+    
+    for(int i = (int)cost.size() - 1; i >= 0; i--){
+        int currentStair = cost[i] + min(oneBefore,twoBefore);
+        twoBefore = oneBefore;
+        oneBefore = currentStair;
+    }
+    
+    return min(oneBefore, twoBefore);
+}
+
+//
+//  771. Jewels and Stones - Easy
+//
+//  You're given strings J representing the types of stones that are jewels, and S representing
+//  the stones you have. Each character in S is a type of stone you have. You want to know how many
+//  of the stones you have are also jewels.
+//
+//  The letters in J are guaranteed distinct, and all characters in J and S are letters. Letters
+//  are case sensitive, so "a" is considered a different type of stone from "A".
+//
+//  Note:
+//  - S and J will consist of letters nad have length at most 50.
+//  - The characters in J are distinct.
+//
+//  Big(O) -> O(j + s), where j and s are the sizes of strings 'J' and 'S' respectively.
+//  Memory -> O(1), we know 'stones' will never exceed more than 58 (2*26) entries. We also know the
+//                  lengths of either string will not exceed 50, so we can consider the space
+//                  complexity to be constant.
+//
+
+int numJewelsInStones(string J, string S) {
+    unordered_map<int,int> stones;
+    
+    for(int i = 0; i < S.length(); i++){
+        stones[S[i]]++;
+    }
+    
+    int stoneJewels = 0;
+    for(int i = 0; i < J.length(); i++){
+        stoneJewels += stones[J[i]];
+    }
+    
+    return stoneJewels;
+}
+
+//
+//  807. Max Increase to Keep City Skyline
+//
+//  In a 2 dimensional array grid, each value grid[i][j] represents the height of a building located
+//  there. We are allowed to increase the height of any number of buildings, by any amount (the
+//  amounts can be different for different buildings). Height 0 is considered to be a building
+//  as well.
+//
+//  At the end, the "skyline" when viewed from all four directions of the grid, i.e. top, bottom,
+//  left, and right, must be the same as the skyline of the original grid. A city's skyline is
+//  the outer contour of the rectangles formed by all the buildings when viewed from a distance.
+//  See the following example.
+//
+//  What is the maximum total sum that the height of the buildings can be increased?
+//
+//  Example
+//
+//  grid:
+//  3 0 8 4
+//  2 4 5 7
+//  9 2 6 3
+//  0 3 1 0
+//
+//  The skyline viewed from top or bottom is: [9, 4, 8, 7]
+//  The skyline viewed from left or right is: [8, 7, 9, 3]
+//
+//  gridNew:
+//  8 4 8 7
+//  7 4 7 7
+//  9 4 8 7
+//  3 3 3 3
+//
+//  Output: 35
+//
+//  Notes:
+//  - 1 < grid.length = grid[0].length <= 50
+//  - All heights grid[i][j] are in the range [0, 100]
+//  - All buildings in grid[i][j] occupy the entire grid cell, that is, they are 1 x 1 x grid[i][j]
+//    rectangular prism.
+//
+//  Big(O) -> O(n^2), where n is the product of the rows and columns of the grid.
+//  Memory -> O(n), where n is the size of a given row or column
+//
+
+void findMaxes(const vector<vector<int>> grid, vector<int> &topBottom, vector<int> &leftRight, const int size){
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < size; j++) {
+            topBottom[i] = max(topBottom[i], grid[i][j]);
+            leftRight[j] = max(leftRight[j], grid[i][j]);
+        }
+    }
+}
+
+int heightIncrease(const vector<vector<int>> grid, const vector<int> topBottom, const vector<int> leftRight, const int size){
+    int increase = 0;
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            increase += min(topBottom[i], leftRight[j]) - grid[i][j];
+        }
+    }
+    return increase;
+}
+
+int maxIncreaseKeepingSkyline(vector<vector<int>>& grid) {
+    int size = (int)grid.size();
+    
+    vector<int> topBottom(size), leftRight(size);
+    findMaxes(grid, topBottom, leftRight, size);
+    
+    return heightIncrease(grid, topBottom, leftRight, size);
 }
