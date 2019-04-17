@@ -403,6 +403,7 @@ void sortColors(vector<int>& nums) {
 
 vector<vector<int>> generate(int numRows){
     if(numRows <= 0) return {};
+    
     vector<vector<int>> pascalsTriangle = {{1}};
     
     for(int i = 1; i < numRows; i++){
@@ -515,16 +516,22 @@ int numIslands(vector<vector<char>>& grid) {
 //  Note:
 //  You may assume k is always valid, 1 ≤ k ≤ array's length.
 //
-//  Big(O) -> O(nlogn), where n = size of the array
+//  Big(O) -> O(klogk + (n-k)logk), where n = size of the array
 //  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
 //
 
 int findKthLargest(vector<int>& nums, int k) {
     priority_queue<int, vector<int>, greater<int>> min_heap;
+    
     for(int i = 0; i < (int)nums.size(); i++){
-        min_heap.push(nums[i]);
-        if(min_heap.size() > k) min_heap.pop();
+        if(min_heap.size() < k){
+            min_heap.push(nums[i]);
+        }else if(nums[i] > min_heap.top()){
+            min_heap.pop();
+            min_heap.push(nums[i]);
+        }
     }
+    
     return min_heap.top();
 }
 
@@ -559,17 +566,22 @@ bool containsDuplicate(vector<int>& nums) {
 //  Note:
 //  You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
 //
-//  Big(O) -> O(nlogn), where n = size of the tree.
+//  Big(O) -> O(klogk + (n-k)logk), where n = size of the tree.
 //  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
 //
 
 void pushValuesToHeap(TreeNode* root, priority_queue<int> &max_heap, const int k){
     if(root == nullptr) return;
-    max_heap.push(root->val);
-    if(max_heap.size() > k) max_heap.pop();
+        
+    if(max_heap.size() < k){
+        max_heap.push(root->val);
+    }else if(root->val < max_heap.top()){
+        max_heap.pop();
+        max_heap.push(root->val);
+    }   
+    
     pushValuesToHeap(root->left, max_heap, k);
-    // since this is a binary tree, only look to the right if the size of max_heap ≤ k
-    if(max_heap.size() <= k) pushValuesToHeap(root->right, max_heap, k);
+    pushValuesToHeap(root->right, max_heap, k);
 }
 
 int kthSmallest(TreeNode* root, int k) {
@@ -677,20 +689,24 @@ void reverseString(vector<char>& s) {
 //
 //  Note that it is the kth smallest element in the sorted order, not the kth distinct element.
 //
-//  Big(O) -> O(nlogn), where n = size of the matrix.
+//  Big(O) -> O(klogk + (n-k)logk), where n = size of the matrix.
 //  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
 //
 
 int kthSmallest(vector<vector<int>>& matrix, int k) {
     priority_queue<int> max_heap;
+    
     for(int i = (int)matrix.size() - 1; i >= 0; i--){
         for(int j = (int)matrix[0].size() - 1; j >= 0; j--){
-            if(max_heap.size() < k || matrix[i][j] <= max_heap.top()){
+            if(max_heap.size() < k){
                 max_heap.push(matrix[i][j]);
-                if(max_heap.size() > k) max_heap.pop();
+            }else if(matrix[i][j] < max_heap.top()){
+                max_heap.pop();
+                max_heap.push(matrix[i][j]);
             }
         }
     }
+    
     return max_heap.top();
 }
 
