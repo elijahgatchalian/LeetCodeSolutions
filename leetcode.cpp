@@ -54,6 +54,7 @@ int main(int argc, const char * argv[]) {
 //
 
 vector<int> twoSum(vector<int>& nums, int target){
+    //  Purpose: Find the indices of the two numbers that add up to the target
     //  Input:
     //      - nums: A vector of integers
     //      - target: An integer representing the target to find
@@ -86,6 +87,7 @@ vector<int> twoSum(vector<int>& nums, int target){
 //
 
 ListNode* addTwoNumbers(ListNode* l1, ListNode* l2){
+    //  Purpose: Add the two numbers represented by two singly linked lists
     //  Input:
     //      - l1: A linked list of integers
     //      - l2: A linked list of integers
@@ -127,6 +129,8 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2){
 //
 
 int lengthOfLongestSubstring(string s) {
+    //  Purpose: Find the length of the longest substring without
+    //           repeating characters
     //  Input: A string
     //  Output: An integer representing the length of the longest run in the input
     //          string that doesn't repeat characters
@@ -166,6 +170,7 @@ int lengthOfLongestSubstring(string s) {
 //
 
 void createPriorityQueue4(const vector<int> nums, priority_queue<int,vector<int>,greater<int>> &min_heap){
+    //  Purpose: Create the min_heap based on values in the input vector
     //  Input:
     //      - nums: A vector of integers
     //      - min_heap: An empty integer minimum heap
@@ -177,9 +182,10 @@ void createPriorityQueue4(const vector<int> nums, priority_queue<int,vector<int>
 }
 
 double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+    //  Purpose: Find the median between the two sorted vectors
     //  Input:
-    //      - nums1: A vector of integers
-    //      - nums2: A vector of integers
+    //      - nums1: A sorted vector of integers
+    //      - nums2: A sorted vector of integers
     //  Output: A double representing the median between both input vectors
     priority_queue<int,vector<int>,greater<int>> min_heap;
     int size = (int)nums1.size() + (int)nums2.size();
@@ -216,6 +222,7 @@ double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
 //
 
 void switchDirection(const int numRows, int &rowCount, bool &up){
+    //  Purpose: Figure out if we need to switch the direction
     //  Input:
     //      - numRows: An integer representing the number of rows
     //      - rowCount: An integer of what row to look at
@@ -236,6 +243,7 @@ void switchDirection(const int numRows, int &rowCount, bool &up){
 }
 
 void createVector6(vector<string> &letters, const int numRows, const string s){
+    //  Purpose: Populate the input vector to
     //  Input:
     //      - letters: A string vector of size numRows
     //      - numRows: An integer representing the number of rows
@@ -261,6 +269,7 @@ void createVector6(vector<string> &letters, const int numRows, const string s){
 }
 
 string convert(string s, int numRows) {
+    //  Purpose: Convert the string s to its zigZag form
     //  Input:
     //      - s: A string of what we are supposed to separate
     //      - numRows: An integer of how many rows to separate the input string
@@ -294,6 +303,7 @@ string convert(string s, int numRows) {
 //
 
 int reverse(int x) {
+    //  Purpose: To reverse the integer of x without converting it to a string
     //  Input: An integer
     //  Output: The reversed integer of x
     if(x == 0 || x == INT_MIN || x == INT_MAX) return 0;
@@ -331,6 +341,8 @@ int reverse(int x) {
 //
 
 int maxArea(vector<int>& height) {
+    //  Purpose: Find the maximum amount of water that can be filled in a container
+    //           using the integer values in height
     //  Input: A vector of integers where each index reprsents a height
     //  Output: An integer of the maximum amount of water that can be contained
     //          using the different heights of the input vector
@@ -360,6 +372,7 @@ int maxArea(vector<int>& height) {
 //
 
 void moveValues(vector<int> &arr, const int size){
+    //  Purpose: Move values around arr so that arr[i] == i + 1
     //  Input:
     //      - arr: An unsorted vector of integers
     //      - size: An integer denoting the size of arr
@@ -374,6 +387,7 @@ void moveValues(vector<int> &arr, const int size){
 }
 
 int findNumber(const vector<int> arr, const int size){
+    //  Purpose: Find the first missing positive integer in arr
     //  Input:
     //      - arr: A sorted vector of integers from least to greatest
     //      - size: An integer denoting the size of arr
@@ -386,6 +400,7 @@ int findNumber(const vector<int> arr, const int size){
 }
 
 int firstMissingPositive(vector<int>& nums) {
+    //  Purpose: Find the first missing positive integer in nums
     //  Input: An unsorted vector of integers
     //  Output: An integer of the first missing positive number
     int size = (int)nums.size();
@@ -409,6 +424,7 @@ int firstMissingPositive(vector<int>& nums) {
 //
 
 int climbStairs(int n) {
+    //  Purpose: Find the different ways we can reach the top
     //  Input: An integer of how many steps it takes to reach the top
     //  Output: An integer of the different ways it takes to reach the top if we
     //          only climb 1 or 2 steps at a time.
@@ -441,6 +457,7 @@ int climbStairs(int n) {
 //
 
 void sortColors(vector<int>& nums) {
+    //  Purpose: Sort nums
     //  Input: A vector of integers of values 0, 1, 2 which represent red, white,
     //         blue respectively
     //  Output: No output but this function changes nums via pass-by-reference. The
@@ -470,6 +487,7 @@ void sortColors(vector<int>& nums) {
 //
 
 vector<vector<int>> generate(int numRows){
+    //  Purpose: Generate an input number of rows of Pascal's Triangle
     //  Input: An integer of how many rows of Pascal's Triangle to calculate
     //  Output: A 2D vector of integers where each vector represents a row
     //          of Pascal's Triangle
@@ -502,6 +520,7 @@ vector<vector<int>> generate(int numRows){
 //
 
 vector<int> getRow(int rowIndex) {
+    //  Purpose: Generate the input row of Pascal's Triangle
     //  Input: An integer of which row to calculate of Pascal's Triangle
     //  Output: A vector of integers of the rowIndex of Pascal's Triangle
     vector<int> pascalsTriangle(rowIndex + 1, 1); // set entire row to 1
@@ -529,6 +548,7 @@ vector<int> getRow(int rowIndex) {
 //
 
 int majorityElement(vector<int>& nums){
+    //  Purpose: Find the integer that occurs more than half the size of nums
     //  Input: A vector of integers
     //  Output: An integer from nums where its occurence appears more than half the
     //          size of the vector
@@ -561,6 +581,7 @@ int majorityElement(vector<int>& nums){
 //
 
 bool valid(const vector<vector<char>> grid, const int i, const int j){
+    //  Purpose: Validate the i,j coordinates in grid
     //  Input:
     //      - grid: A 2D vector of characters representing a grid
     //      - i: An integer representing the x-coordinate of the grid
@@ -571,6 +592,7 @@ bool valid(const vector<vector<char>> grid, const int i, const int j){
 }
 
 void findSurroundingLand(vector<vector<char>> &grid, const int i, const int j){
+    //  Purpose: Find the surrounding land
     //  Input:
     //      - grid: A 2D vector of characters representing a grid
     //      - i: An integer representing the x-coordinate of the grid
@@ -589,6 +611,7 @@ void findSurroundingLand(vector<vector<char>> &grid, const int i, const int j){
 }
 
 int numIslands(vector<vector<char>>& grid) {
+    //  Purpose: Calculates how many islands are in the grid
     //  Input: A 2D vector of characters representing a grid
     //  Output: An integer of how many islands are found in the 2D vector
     int islandsFound = 0;
@@ -619,6 +642,7 @@ int numIslands(vector<vector<char>>& grid) {
 //
 
 int findKthLargest(vector<int>& nums, int k) {
+    //  Purpose: Find the kth largest element in nums once sorted
     //  Input:
     //      - nums: An unsorted vector of integers
     //      - k: An integer of which largest element to return once nums is sorted
@@ -649,6 +673,7 @@ int findKthLargest(vector<int>& nums, int k) {
 //
 
 bool containsDuplicate(vector<int>& nums) {
+    //  Purpose: Find the duplicate integer in the input vector
     //  Input: A vector of integers
     //  Output: A boolean where it returns true if a duplicate integer has been
     //          found in nums. False if otherwise.
@@ -675,6 +700,7 @@ bool containsDuplicate(vector<int>& nums) {
 //
 
 void pushValuesToHeap(TreeNode* root, priority_queue<int> &max_heap, const int k){
+    //  Purpose: Create a max_heap of integers from the binary tree
     //  Input:
     //      - root: A binary tree node of integers
     //      - max_heap: A heap of integers sorted from greatest to least
@@ -693,6 +719,7 @@ void pushValuesToHeap(TreeNode* root, priority_queue<int> &max_heap, const int k
 }
 
 int kthSmallest(TreeNode* root, int k){
+    //  Purpose: Find the kth smallest element in the binary tree
     //  Input:
     //      - root: A binary tree node of integers
     //      - k: An integer of which the smallest element to return of the binary
@@ -718,6 +745,7 @@ int kthSmallest(TreeNode* root, int k){
 //
 
 bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    //  Purpose: Find if the target value is in the 2D vector
     //  Input:
     //      - matrix: A sorted 2D vector of integers. Each row and column are sorted
     //                from least to greatest (left to right, top to bottom).
@@ -754,6 +782,7 @@ class NumArray {
     vector<int> allSums, myArray;
 public:
     NumArray(vector<int>& nums) { // Constructor
+        //  Purpose: Create a NumArray object that has two private vectors
         //  Input: A vector of integers
         //  Output: No output but creates a NumArray object. This function populates
         //          the private allSums and myArray integer vectors.
@@ -766,6 +795,8 @@ public:
     }
     
     void update(int i, int val) {
+        //  Purpose: Update myArray to have the new value at index i. Also update
+        //           allSums to reflect the new value
         //  Input:
         //      - i: An integer representing which index to update of myArray
         //      - val: An integer of what to update myArray[i] to
@@ -778,6 +809,7 @@ public:
     }
     
     int sumRange(int i, int j) {
+        //  Purpose: Returns the summation of myArray between i and j in O(1) time
         //  Input:
         //      - i: An integer representing the left endpoint
         //      - j: An integer representing the right endpoint
@@ -804,6 +836,7 @@ public:
 //
 
 void reverseString(vector<char>& s) {
+    //  Purpose: Reverses the vector
     //  Input: A vector of characters
     //  Output: No output. This function reverses the input vector
     int beginning = 0, ending = (int)s.size() - 1;
@@ -828,6 +861,7 @@ void reverseString(vector<char>& s) {
 //
 
 int kthSmallest(vector<vector<int>>& matrix, int k) {
+    //  Purpose: Find the kth smallest element in the 2D vector
     //  Input:
     //      - matrix: A 2D vector of integers
     //      - k: An integer of which the smallest element to return from matrix
@@ -861,6 +895,7 @@ int kthSmallest(vector<vector<int>>& matrix, int k) {
 //
 
 int fib(int N) {
+    //  Purpose: Calculate the Fibonacci summation of N
     //  Input: An integer to calculate the Fibonacci summation
     //  Output: An integer representing the Fibonacci summation of N
     if(N == 0) return 0;
@@ -888,6 +923,7 @@ int fib(int N) {
 //
 
 void traverseTree(const TreeNode* root, vector<int> &allNumbers){
+    //  Purpose: Preorder traverse the tree and push the value to the vector
     //  Input:
     //      - root: A binary tree of integers
     //      - allNumbers: A vector of integers
@@ -901,6 +937,8 @@ void traverseTree(const TreeNode* root, vector<int> &allNumbers){
 }
 
 int getMinimumDifference(TreeNode* root) {
+    //  Purpose: Calculate the absolute minimum difference between any two nodes
+    //           of the binary tree
     //  Input: A binary tree of integers
     //  Output: An integer of the absolute minimum difference between any two nodes
     //          of the binary tree
@@ -932,6 +970,7 @@ int getMinimumDifference(TreeNode* root) {
 //
 
 double initialSum(const vector<int> &nums, const int k){
+    //  Purpose: Calculate the initial sum from 0 to k-1
     //  Input:
     //      - nums: A vector of integers
     //      - k: An integer of the last index in nums to calculate the summation
@@ -946,6 +985,7 @@ double initialSum(const vector<int> &nums, const int k){
 }
 
 double findMaxAverage(vector<int>& nums, int k) {
+    //  Purpose: Find the maximum summation of a subarray of size k
     //  Input:
     //      - nums: A vector of integers
     //      - k: An integer representing the size of the subarray to calculate the
@@ -983,6 +1023,7 @@ double findMaxAverage(vector<int>& nums, int k) {
 //
 
 bool valid(const vector<vector<int>> grid, const int x, const int y){
+    //  Purpose: Validate the x,y coordinate within the grid
     //  Input:
     //      - grid: A 2D vector of integers representing a grid
     //      - x: An integer representing the x-coordinate of the grid
@@ -993,6 +1034,7 @@ bool valid(const vector<vector<int>> grid, const int x, const int y){
 }
 
 int countArea(vector<vector<int>> &grid, const int x, const int y){
+    //  Purpose: Count the surrounding area of a found island
     //  Input:
     //      - grid: A 2D vector of integers representing a grid
     //      - x: An integer representing the x-coordinate of the grid
@@ -1012,6 +1054,7 @@ int countArea(vector<vector<int>> &grid, const int x, const int y){
 }
 
 int maxAreaOfIsland(vector<vector<int>>& grid) {
+    //  Purpose: Find the largest island in the grid
     //  Input: A 2D vector of integers representing a grid
     //  Output: An integer of the maximum area in grid
     int maxArea = 0;
@@ -1046,9 +1089,11 @@ int maxAreaOfIsland(vector<vector<int>>& grid) {
 //
 
 int minCostClimbingStairs(vector<int>& cost) {
+    //  Purpose: Find the minimum cost it would take to climb up the stairs
+    //           where we can only walk 1 or 2 steps at a time
     //  Input: A vector of integers
     //  Output: An integer of the least cost it takes to climb up the stairs
-    //          where we are only able to climb 1 or 2 steps at a time.
+    //          where we are only able to climb 1 or 2 steps at a time
     int oneBefore = 0, twoBefore = 0;
     
     for(int i = (int)cost.size() - 1; i >= 0; i--){
@@ -1081,6 +1126,7 @@ int minCostClimbingStairs(vector<int>& cost) {
 //
 
 int numJewelsInStones(string J, string S) {
+    //  Purpose: Find how many stones are also jewels
     //  Input:
     //      - J: A string representing stones that are jewels that I own
     //      - S: A string representing stones that I own
@@ -1144,6 +1190,8 @@ int numJewelsInStones(string J, string S) {
 //
 
 void findMaxes(const vector<vector<int>> grid, vector<int> &topBottom, vector<int> &leftRight, const int size){
+    //  Purpose: Find the maximum heights of the skyline when looking at it from
+    //           either top to bottom or left to right
     //  Input:
     //      - grid: A 2D vector of integers representing a grid
     //      - topBottom: An empty vector of integers
@@ -1163,6 +1211,9 @@ void findMaxes(const vector<vector<int>> grid, vector<int> &topBottom, vector<in
 }
 
 int heightIncrease(const vector<vector<int>> grid, const vector<int> topBottom, const vector<int> leftRight, const int size){
+    //  Purpose: Calculate the total increase of each building if we set them to
+    //           its maximum possible height so that the skyline remains the same
+    //           when viewed from top to bottom and left to right
     //  Input:
     //      - grid: A 2D vector of integers representing a grid
     //      - topBottom: A vector of integers of the maximum value a point can be
@@ -1183,6 +1234,8 @@ int heightIncrease(const vector<vector<int>> grid, const vector<int> topBottom, 
 }
 
 int maxIncreaseKeepingSkyline(vector<vector<int>>& grid) {
+    //  Purpose: Find the total height increase possible that doesn't change
+    //           the skyline view
     //  Input: A 2D vector of integers representing a grid
     //  Output: An integer of the total increase of each building in the grid
     int size = (int)grid.size();
