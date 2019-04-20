@@ -1146,6 +1146,98 @@ int numJewelsInStones(string J, string S) {
 }
 
 //
+//  787. Cheapest Flights Within K Stops
+//
+//  There are n cities connected by m flights. Each flights starts from city u and arrives at v with
+//  price w.
+//
+//  Now given all the cities and flights, together with starting city src and the destination dst,
+//  your task is to find the cheapest price from src to dst with up to k stops. If there is no
+//  such route, output -1.
+//
+//  Note:
+//  - The number of nodes n will be in range [1, 100], with nodes labeled from 0 to n - 1.
+//  - The size of flights will be in range [0, n * (n - 1) / 2].
+//  - The format of each flight will be (src, dst, price).
+//  - The price of each flight will be in the range [1, 10000].
+//  - k is in the range of [0, n - 1].
+//  - There will not be any duplicated flights or self cycles.
+//
+//  Big(O) -> O(c*r), where c and r are the number of cities and number of routes between
+//            the cities
+//  Memory -> O(c), where c is the number of cities
+//
+
+void flightPlan(unordered_map<int, vector<pair<int,int>>> &flightDestinations, const vector<vector<int>> flights){
+    //  Purpose: Create a hash map for the different routes from a city and its cost
+    //  Input:
+    //      - flightDestinations: An empty hash map. Its key is an int representing a city and its value is
+    //                            vector of pairs of ints. First int of pair is the destination and
+    //                            the second int is the cost
+    //      - flights: A 2D vector of ints
+    //  Output: No output but function populates flightDestinations via pass-by-reference
+    for(auto flight: flights){
+        flightDestinations[flight[0]].emplace_back(flight[1], flight[2]);
+    }
+}
+
+void flyRoute(unordered_map<int, vector<pair<int,int>>> flightDestinations, const int routes, queue<pair<int,int>> &differentRoutes, const int dst, int &cheapest){
+    //  Purpose: Fly through all the route options
+    //  Input:
+    //      - flightDestinations: Hash map of cities to its destinations with current cost
+    //      - routes: An integer representing how many flights to look through
+    //      - differentRoutes: A queue that holds all routes from the previous city
+    //      - dst: An integer representing the destination city
+    //      - cheapest: An integer representing the cheapest cost
+    //  Output: No output but changes following variables via pass-by-reference
+    //      - differentRoutes: Pops 'routes' values. Then pushes all other
+    //                         possible destinations and their current cost
+    //      - cheapest: An integer holding the cheapest option
+    for(int i = 0; i < routes; i++){
+        auto currentRoute = differentRoutes.front();
+        differentRoutes.pop();
+        
+        if(currentRoute.first == dst) cheapest = min(cheapest, currentRoute.second);
+        
+        for(auto x: flightDestinations[currentRoute.first]){
+            if(currentRoute.second + x.second < cheapest){
+                differentRoutes.push({x.first, currentRoute.second + x.second}); // Add price thus far
+            }
+        }
+    }
+    
+}
+
+int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+    //  Purpose: Find the cheapest route from source location to destination
+    //  Input:
+    //      - n: An integer representing the number of cities
+    //      - flights: A 2D vector of flights. Each vector looks like {src, dst, cost}
+    //      - src: An integer representing the starting city
+    //      - dst: An integer representing the final city
+    //      - K: An integer reprsenting how many "layovers" are allowed between
+    //           src to dst city
+    //  Output: An integer of the cheapest amount of money it takes to get from
+    //          src to dst. If it is not possible to get to dst within K stops,
+    //          then return -1;
+    unordered_map<int, vector<pair<int,int>>> flightDestinations;
+    flightPlan(flightDestinations, flights);
+    
+    int cheapest = INT_MAX, stops = 0;
+    queue<pair<int,int>> differentRoutes;
+    differentRoutes.push({src, 0}); // Cost is 0 to start from initial city
+    
+    while(!differentRoutes.empty() && stops <= K + 1){
+        int numRoutes = (int)differentRoutes.size();
+        flyRoute(flightDestinations, numRoutes, differentRoutes, dst, cheapest);
+        stops++;
+    }
+    
+    if(cheapest == INT_MAX) return -1;
+    else return cheapest;
+}
+
+//
 //  807. Max Increase to Keep City Skyline
 //
 //  In a 2 dimensional array grid, each value grid[i][j] represents the height of a building located
