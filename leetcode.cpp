@@ -1146,7 +1146,7 @@ int numJewelsInStones(string J, string S) {
 }
 
 //
-//  787. Cheapest Flights Within K Stops
+//  787. Cheapest Flights Within K Stops - Medium
 //
 //  There are n cities connected by m flights. Each flights starts from city u and arrives at v with
 //  price w.
@@ -1238,7 +1238,7 @@ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int
 }
 
 //
-//  807. Max Increase to Keep City Skyline
+//  807. Max Increase to Keep City Skyline - Medium
 //
 //  In a 2 dimensional array grid, each value grid[i][j] represents the height of a building located
 //  there. We are allowed to increase the height of any number of buildings, by any amount (the
