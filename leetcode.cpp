@@ -882,6 +882,45 @@ int kthSmallest(vector<vector<int>>& matrix, int k) {
 }
 
 //
+//  463. Island Perimeter - Easy
+//
+//  You are given a map in form of a two-dimensional integer grid where 1 represents land
+//  and 0 represents water.
+//
+//  Grid cells are connected horizontally/vertically (not diagonally). The grid is completely
+//  surrounded by water, and there is exactly one island (i.e., one or more connected land cells).
+//
+//  The island doesn't have "lakes" (water inside that isn't connected to the water around
+//  the island). One cell is a square with side length 1. The grid is rectangular, width and
+//  height don't exceed 100. Determine the perimeter of the island.
+//
+//  Big(O) -> O(m x n), where m and n represent the dimensions of the grid
+//  Memory -> O(1)
+//
+
+int islandPerimeter(vector<vector<int>>& grid){
+    //  Purpose: Find the perimeter of land that touches water
+    //  Input: A 2D vector of integers of 0s and 1s that represent water and land respectively
+    //  Output: An integer indicating how much land touches water
+    int land = 0, landOverlap = 0;
+    
+    for(int i = 0; i < grid.size(); i++){
+        for(int j = 0; j < grid[i].size(); j++){
+            if(grid[i][j] == 1){
+                if(i != 0 && grid[i - 1][j] == 1) landOverlap++;
+                if(j != 0 && grid[i][j - 1] == 1) landOverlap++;
+                land++;
+            }
+        }
+    }
+    
+    //  Multiply by 4 because that's the max perimeter a given land can have
+    //  Multiply by 2 because if we find that a land touches another land,
+    //      we need to take one side from both lands
+    return 4 * land - 2 * landOverlap;
+}
+
+//
 //  509. Fibonacci Number - Easy
 //
 //  The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence,
