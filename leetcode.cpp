@@ -941,6 +941,67 @@ public:
     }
 };
 
+//
+//  329. Longest Increasing Path in a Matrix - Hard
+//
+//  Given an integer matrix, find the length of the longest increasing path.
+//
+//  From each cell, you can either move to four directions: left, right, up or down.
+//  You may NOT move diagonally or move outside of the boundary (i.e. wrap-around
+//  is not allowed).
+//
+//  Big(O) -> O(m x n), where m and n are the dimensions of the 2D vector
+//  Memory -> O(m x n), where m and n are the dimensions of the 2D vector
+//
+//  ********* It is important to note that the longest path in the grid may not start
+//  at [0,0]. *********
+//
+
+int findPath(vector<vector<int>> &matrix, int i, int j, int prevNum, vector<vector<int>> &pathTaken){
+    //  Purpose: Find the longest path
+    //  Input:
+    //      - matrix: A 2D vector of integers
+    //      - i: An integer representing the x coordinate in the grid
+    //      - j: An integer representing the y coordinate in the grid
+    //      - prevNum: An integer representing the previous number to compare to
+    //      - pathTaken: A 2D vector of integers that holds the longest path from a
+    //                   coordinate point in the original grid
+    //  Output: An integer representing the longest path from matrix[i][j]
+    if(!(i >= 0 && i < matrix.size() && j >= 0 && j < matrix[i].size() && matrix[i][j] > prevNum)) return 0;
+    
+    //  If pathTaken[i][j] is not 0, it has an integer representing the longest path
+    //  This makes it so we do not have to redo any work
+    if(pathTaken[i][j] != 0) return pathTaken[i][j];
+    
+    int right = findPath(matrix, i + 1, j, matrix[i][j], pathTaken);
+    int left = findPath(matrix, i - 1, j, matrix[i][j], pathTaken);
+    int down = findPath(matrix, i, j + 1, matrix[i][j], pathTaken);
+    int up = findPath(matrix, i, j - 1, matrix[i][j], pathTaken);
+    
+    //  Set furthest path to pathTaken[i][j]
+    pathTaken[i][j] = max(right, max(left, max(down, up))) + 1;
+    
+    return pathTaken[i][j]; // At this point, pathTaken[i][j] has the longest path
+}
+
+int longestIncreasingPath(vector<vector<int>>& matrix) {
+    //  Purpose: Find the longest path where the next number is greater than the previous
+    //  Input: A 2D vector of integers representing a grid
+    //  Output: An integer representing the longest path of increasing numbers.
+    if(matrix.size() == 0) return 0;
+    
+    int maxPath = 0;
+    vector<vector<int>> pathTaken(matrix.size(), vector<int> (matrix[0].size(), 0));
+    
+    //  Need to loop through the whole grid
+    for(int i = 0; i < matrix.size(); i++){
+        for(int j = 0; j < matrix[i].size(); j++){
+            maxPath = max(maxPath, findPath(matrix, i, j, -1, pathTaken));
+        }
+    }
+    
+    return maxPath;
+}
 
 //
 //  344. Reverse String - Easy
@@ -1001,6 +1062,57 @@ int kthSmallest(vector<vector<int>>& matrix, int k) {
     }
     
     return max_heap.top();
+}
+
+//
+//  448. Find All Numbers Disappeared in an Array - Easy
+//
+//  Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear
+//  twice and others appear once.
+//
+//  Find all the elements of [1, n] inclusive that do not appear in this array.
+//
+//  Could you do it without extra space and in O(n) runtime? You may assume the returned
+//  list does not count as extra space.
+//
+//  Big(O) -> O(n), where n = the size of the vector
+//  Memory -> O(1), assuming the returned list does not count as extra space
+//
+
+void sortArray(vector<int> &nums){
+    //  Purpose: Because we know all elements are between 1 and n inclusive, we can swap
+    //           numbers into their corresponding index + 1 spot
+    //  Input: An unsorted vector of integers
+    //  Output: No output but this function swaps values in nums until nums[i] == i + 1
+    for(int i = 0; i < nums.size(); i++){
+        while(nums[i] > 0 && nums[i] <= nums.size() && nums[nums[i] - 1] != nums[i]){
+            swap(nums[i], nums[nums[i] - 1]);
+        }
+    }
+}
+
+void stepThroughArray(const vector<int> nums, vector<int> &missingNumbers){
+    //  Purpose: Step through the vector and find where nums[i] != i + 1
+    //  Input:
+    //      - nums: For the most part, a sorted vector of integers
+    //      - missingNumbers: An empty vector meant to hold missing numbers
+    //  Output: No output but this function pushes numbers where the value does not equal
+    //          the index + 1 in nums
+    for(int i = 0; i < nums.size(); i++){
+        if(i + 1 != nums[i]){
+            missingNumbers.push_back(i + 1);
+        }
+    }
+}
+
+vector<int> findDisappearedNumbers(vector<int>& nums) {
+    //  Purpose: Finds the positive numbers that are missing in the input vector
+    //  Input: An unsorted vector of integers
+    //  Output: A vector of integers that contain the missing numbers in nums
+    vector<int> missingNumbers;
+    sortArray(nums);
+    stepThroughArray(nums, missingNumbers);
+    return missingNumbers;
 }
 
 //
@@ -1118,6 +1230,49 @@ int getMinimumDifference(TreeNode* root) {
     }
     
     return min;
+}
+
+//
+//  605. Can Place Flowers - Easy
+//
+//  Suppose you have a long flowerbed in which some of the plots are planted and some are not.
+//  However, flowers cannot be planted in adjacent plots - they would compete for water and both
+//  would die.
+//
+//  Given a flowerbed (represented as an array containing 0 and 1, where 0 means empty and 1
+//  means not empty), and a number n, return if n new flowers can be planted in it without
+//  violating the no-adjacent-flowers rule.
+//
+//  Note:
+//  1. The input array won't violate no-adjacent-flowers rule.
+//  2. The input array size is in the range of [1, 20000].
+//  3. n is a non-negative integer which won't exceed the input array size.
+//
+//  Big(O) -> O(n), where n = the size of the vector
+//  Memory -> O(1)
+//
+
+bool canPlaceFlowers(vector<int>& flowerbed, int n) {
+    //  Purpose: See if we can insert n amount of flowers into the vector
+    //  Input:
+    //      - flowerbed: A vector of integers of 0s and 1s where 0 represents dirt and
+    //                   1 represents a flower
+    //      - n: An integer representing the number of flowers we wish to plant
+    //  Output: A boolean if we can at least plant n amount of flowers
+    flowerbed.insert(flowerbed.begin(),0); // add 0 at the beginning
+    flowerbed.push_back(0); // add 0 at the end
+    int i = 1;
+    while(i < flowerbed.size() - 1){
+        // only decrease flower count n if sum equals to 0
+        if(flowerbed[i - 1] + flowerbed[i] + flowerbed[i + 1] == 0){
+            n--;
+            i++; // increment here so we don't have to look at the same spot
+        }
+        i++;
+    }
+    //  It's not entirely clear in the original problem statement, but you can plant more 
+    //  than n times and still return true
+    return n <= 0; 
 }
 
 //
