@@ -410,6 +410,50 @@ int firstMissingPositive(vector<int>& nums) {
 }
 
 //
+//  48. Rotate Image - Medium
+//
+//  You are given an n x n 2D matrix representing an image.
+//
+//  Rotate the image by 90 degrees (clockwise).
+//
+//  Note:
+//  You have to rotate the image in-place, which means you have to modify the
+//  input 2D matrix directly. DO NOT allocate another 2D matrix and do the
+//  rotation.
+//
+//  Big(O) -> O(n^2), where n = one dimension of the 2D vector
+//  Memory -> O(1)
+//
+
+void switchValues(vector<vector<int>>& matrix, const int a, const int b){
+    //  Purpose: Switches values of the current four sides of the box
+    //  Input:
+    //      - matrix: A 2D vector of integers representing an image
+    //      - a: An integer
+    //      - b: An integer
+    //  Output: No output but changes the current perimeter within matrix
+    for(int i = 0; i < (b - a); i++){
+        swap(matrix[a][a + i], matrix[a + i][b]);
+        swap(matrix[a][a + i], matrix[b][b - i]);
+        swap(matrix[a][a + i], matrix[b - i][a]);
+    }
+}
+
+void rotate(vector<vector<int>>& matrix) {
+    //  Purpose: Rotates 2D vector of integers clockwise
+    //  Input: A 2D vector of integers
+    //  Output: No output but rotates the 2D vector clockwise one time
+    int a = 0;
+    int b = (int)matrix.size() - 1;
+    
+    while(a < b){ // Start from the outer box and work in
+        switchValues(matrix, a, b);
+        a++;
+        b--;
+    }
+}
+
+//
 //  70. Climbing Stairs - Easy
 //
 //  You are climbing a stair case. It takes n steps to reach to the top.
@@ -532,6 +576,84 @@ vector<int> getRow(int rowIndex) {
     }
     
     return pascalsTriangle;
+}
+
+//
+//  153. Find Minimum in Rotated Sorted Array - Medium
+//
+//  Suppose an array sorted in ascending order is rotated at some pivot point unknown
+//  to you beforehand.
+//
+//  (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]).
+//
+//  Find the minimum element.
+//
+//  You may assume no duplicate exists in the array.
+//
+//  Big(O) -> O(logn), where n = size of the array
+//  Memory -> O(1)
+//
+
+int findMin(vector<int>& nums) {
+    //  Purpose: Find the minimum element in a rotated sorted vector
+    //  Input: A rotated sorted vector of integers
+    //  Output: An integer representing the minimum element in a sorted vector
+    int start = 0, end = (int)nums.size() - 1;
+    
+    while (start < end) {
+        //  If the left is less than the right, we know this portion is sorted
+        //      and can return nums[start]
+        if (nums[start] < nums[end]) return nums[start]; 
+        
+        //  Begin looking at the middle between start and end
+        int mid = (start + end)/2;
+        
+        if (nums[mid] >= nums[start]) start = mid + 1;
+        else end = mid;
+    }
+    
+    return nums[start];
+}
+
+//
+//  154. Find Minimum in Rotated Sorted Array II - Hard
+//
+//  Suppose an array sorted in ascending order is rotated at some pivot
+//  unknown to you beforehand.
+//
+//  (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]).
+//
+//  Find the minimum element.
+//
+//  The array may contain duplicates.
+//
+//  Note:
+//  - This is a follow up problem to 153. Find the Minimum in Rotated Sorted Array.
+//  - Would allow duplicates affect the run-time complexity? How and why?
+//
+//  Big(O) -> O(n), where n = the size of the vector
+//  Memory -> O(1)
+//
+//  ********* Cannot do a binary search like we did in 153 because of the addition
+//  of duplicate values. There could be a case like [10,1,10,10,10] which would
+//  be difficult to determine which half to look at because nums[start] == nums[end]
+//  == nums[middle]. *********
+//
+
+int findMinII(vector<int>& nums) {
+    //  Purpose: Find the minimum element in the rotated sorted vector
+    //           that may have duplicate values
+    //  Input: A rotated sorted vector of integers that could have duplicates
+    //  Output: An integer representing the minimum element in the input vector
+    
+    for(int i = 1; i < nums.size(); i++){
+        //  Assume first element is minimum element
+        //  Once a smaller element is found, return value
+        if(nums[0] > nums[i]) return nums[i];
+    }
+    
+    //  if we exit for loop, this means the first element is smallest
+    return nums[0];
 }
 
 //
@@ -1108,6 +1230,41 @@ int maxAreaOfIsland(vector<vector<int>>& grid) {
     }
     
     return maxArea;
+}
+
+//
+//  704. Binary Search - Easy
+//
+//  Given a sorted (in ascending order) integer array nums of n elements and a target value,
+//  write a function to search target in nums. If target exists, then return its index,
+//  otherwise return -1.
+//
+//  Note:
+//  1. You may assume that all elements in nums are unique
+//  2. n will be in range of [1, 10000]
+//  3. The value of each element in nums will be in the range [-9999,9999]
+//
+//  Big(O) -> O(logn), where n = size of the vector
+//  Memory -> O(1)
+//
+
+int search(vector<int>& nums, int target) {
+    //  Purpose: Find if a given number is in a vector
+    //  Input:
+    //      - nums: A vector of nums in ascending order
+    //      - target: An integer that could be in nums
+    //  Output: The index of target in nums. If its not in nums, return -1.
+    int start = 0, end = (int)nums.size() - 1;
+    
+    while(start <= end){
+        int mid = (start + end)/2;
+        
+        if(nums[mid] < target) start = mid + 1;
+        else if(nums[mid] > target) end = mid - 1;
+        else return mid;
+    }
+    
+    return -1;
 }
 
 //
