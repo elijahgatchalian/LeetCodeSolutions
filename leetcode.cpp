@@ -751,6 +751,46 @@ int numIslands(vector<vector<char>>& grid) {
 }
 
 //
+//  209. Minimum Size Subarray Sum - Medium
+//
+//  Given an array of n positive integers and a positive integer s, find the minimal length
+//  of a contiguous subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+//
+//  Big(O) -> O(n), where n = the size of the vector
+//  Memory -> O(1)
+//
+//  ********* Here I used the chasing two pointer method. Have a running sum of using a faster
+//  index and once our running sum becomes greater than or equal to the target, subtract
+//  from the running sum using the slower index. The difference between the fast and slow
+//  pointers given the length of the subarray. *********
+//
+
+int minSubArrayLen(int s, vector<int>& nums) {
+    //  Purpose: Find the smallest subarray that sums up to a number greater than or equal to s
+    //  Input:
+    //      - s: An integer representing the minimum sum target we want to achieve
+    //      - nums: A vector of integers
+    //  Output: An integer representing the smallest subarray size whose sum is greater than or
+    //          equal to s. If no such subarray exists, return 0.
+    int slow = 0, fast = 0;
+    int n = (int)nums.size(), sum = 0;
+    int smallestLength = INT_MAX;
+    
+    while(fast < n){
+        sum += nums[fast];
+        fast++;
+        while(sum >= s){
+            smallestLength = min(smallestLength, fast - slow);
+            sum -= nums[slow];
+            slow++;
+        }
+    }
+    
+    if(smallestLength == INT_MAX) return 0;
+    else return smallestLength;
+}
+
+//
 //  215. Kth Largest Element in an Array - Medium
 //
 //  Find the kth largest element in an unsorted array. Note that it is the kth
