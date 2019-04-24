@@ -134,21 +134,22 @@ int lengthOfLongestSubstring(string s) {
     //  Input: A string
     //  Output: An integer representing the length of the longest run in the input
     //          string that doesn't repeat characters
-    unordered_map<char, int> charToOccurence;
-    string currentRun = "";
-    int maxRun = 0;
+    if(s.length() <= 1) return (int)s.length();
     
-    for(int index = 0; index < s.length(); index++){
-        auto it = charToOccurence.find(s[index]);
-        if(it != charToOccurence.end()){
-            index = it->second + 1;
-            charToOccurence.clear();
-            currentRun = s[index];
-        }else currentRun += s[index];
+    // Holds most recent (index + 1) of char
+    unordered_map<char, int> charToRecentIndex;
+    int maxRun = 0;
+    int slow = 0, fast = 0;
+    
+    while(fast < s.length()){
+        //  Update slow to most recent index of the repeated character that
+        //      fast just landed on
+        if(charToRecentIndex[s[fast]] > slow) slow = charToRecentIndex[s[fast]];
+       
+        charToRecentIndex[s[fast]] = fast + 1;
         
-        maxRun = max((int)currentRun.length(), maxRun);
-        
-        charToOccurence[s[index]] = index;
+        fast++;
+        maxRun = max(maxRun, fast - slow);
     }
     
     return maxRun;
