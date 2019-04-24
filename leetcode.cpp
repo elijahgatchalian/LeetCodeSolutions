@@ -5,10 +5,10 @@
 //  Copyright © 2019 Eli Gatchalian. All rights reserved.
 //
 //
-//   Hi everyone! I'm a software engineer and I decided to compile my solutions to
-//   some of the problems posted on leetcode.com using C++. I have provided time
-//   and space complexity for each problem. Feel free to message me if you see something
-//   confusing or wrong!
+//  Hi everyone! I'm a software engineer and I decided to compile my solutions to
+//  some of the problems posted on leetcode.com using C++. I have provided time
+//  and space complexity for each problem. Feel free to message me if you see
+//  something confusing or wrong!
 //
 
 //  Definition for singly-linked list.
@@ -145,7 +145,7 @@ int lengthOfLongestSubstring(string s) {
         //  Update slow to most recent index of the repeated character that
         //      fast just landed on
         if(charToRecentIndex[s[fast]] > slow) slow = charToRecentIndex[s[fast]];
-       
+        
         charToRecentIndex[s[fast]] = fast + 1;
         
         fast++;
@@ -210,7 +210,8 @@ double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
 //
 //  6. ZigZag Conversion - Medium
 //  The string "PAYPALISHIRING" is written in a zigzag patter on a given number
-//  of rows like this: (you may want to display this pattern in a fixed font for legibility)
+//  of rows like this: (you may want to display this pattern in a fixed font for
+//  legibility)
 //
 //  P       A       H       N
 //  A   P   L   S   I   I   G
@@ -296,8 +297,9 @@ string convert(string s, int numRows) {
 //
 //  Note:
 //  Assume we are dealing with an environment which could only store integers
-//  within the 32-bit signed integer range: [-2^31, 2^31 - 1]. For the purpose of this
-//  problem, assume that your function returns 0 when the reverse integer overflows.
+//  within the 32-bit signed integer range: [-2^31, 2^31 - 1]. For the purpose of
+//  this problem, assume that your function returns 0 when the reverse integer
+//  overflows.
 //
 //  Big(O) -> O(log(x))
 //  Memory -> O(1)
@@ -329,9 +331,9 @@ int reverse(int x) {
 //  11. Container With Most Water - Medium
 //
 //  Given n non-negative integers  a1, a2, ..., an, where each represents a point at
-//  coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i
-//  is at (i, ai) and (i, 0). Find the two lines, which together with x-axis forms a
-//  container, such that the container contains the most water.
+//  coordinate (i, ai). n vertical lines are drawn such that the two endpoints of
+//  line i is at (i, ai) and (i, 0). Find the two lines, which together with x-axis
+//  forms a container, such that the container contains the most water.
 //
 //  Note: You may not slant the container and n is at least 2.
 //
@@ -487,13 +489,70 @@ int climbStairs(int n) {
 }
 
 //
+//  74. Search a 2D Matrix - Medium
+//
+//  Write an efficient algorithm that searches for a value in an m x n matrix.
+//  This matrix has the following properties:
+//  - Integers in each row are sorted from left to right.
+//  - The first integer of each row is greater than the last integer of the
+//    previous row.
+//
+//  Big(O) -> O(logm + logn), where m and n are the dimensions of the matrix
+//  Memory -> O(1)
+//
+
+int findRow(vector<vector<int>> matrix, int target){
+    //  Purpose: Find the row the target value is in using binary search
+    //  Input:
+    //      - matrix: A 2D vector of integers
+    //      - target: An integer to find in the matrix
+    //  Output: An integer of what row the target value is in
+    int topRow = 0, bottomRow = (int)matrix.size() - 1;
+    
+    while(topRow < bottomRow){
+        int midRow = (topRow + bottomRow)/2;
+        int leftVal = matrix[midRow][0];
+        int rightVal = matrix[midRow][matrix[midRow].size() - 1];
+        
+        if(leftVal > target && rightVal > target) bottomRow = midRow - 1;
+        else if(leftVal < target && rightVal < target) topRow = midRow + 1;
+        else return midRow;
+    }
+    
+    return topRow;
+}
+
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    //  Purpose: Find if the target value is in matrix using binary search
+    //  Input:
+    //      - matrix: A 2D vector of integers
+    //      - target: An integer to find in the matrix
+    //  Output: A boolean. True if target is in matrix, false otherwise
+    if(matrix.size() == 0) return false;
+    
+    int row = findRow(matrix, target);
+    int left = 0, right = (int)matrix[row].size() - 1;
+    
+    while(left <= right){
+        int mid = (left + right)/2;
+        
+        if(matrix[row][mid] < target) left = mid + 1;
+        else if(matrix[row][mid] > target) right = mid - 1;
+        else return true;
+    }
+    
+    return false;
+}
+
+//
 //  75. Sort Colors - Medium
 //
-//  Given an array with n objects colored red, white or blue, sort them in-place so that objects
-//  of the same color are adjacents, with the colors in the order red, white and blue.
+//  Given an array with n objects colored red, white or blue, sort them in-place
+//  so that objects of the same color are adjacents, with the colors in the order
+//  red, white and blue.
 //
-//  Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue
-//  respectively.
+//  Here, we will use the integers 0, 1, and 2 to represent the color red, white,
+//  and blue respectively.
 //
 //  Note: You are not suppose to use the library's sort function for this problem.
 //
@@ -525,7 +584,8 @@ void sortColors(vector<int>& nums) {
 //
 //  118. Pascal's Triangle - Easy
 //
-//  Given a non-negative integer numRows, generate the first numRows of Pascal's Triangle.
+//  Given a non-negative integer numRows, generate the first numRows of
+//  Pascal's Triangle.
 //
 //  Big(O) -> O(n^2), where n = numRows
 //  Memory -> O(n^2), where n = numRows
@@ -556,7 +616,8 @@ vector<vector<int>> generate(int numRows){
 //
 //  119. Pascal's Triangle II - Easy
 //
-//  Given a non-negative index k where k ≤ 33, return the kth index row of the Pascal's triangle.
+//  Given a non-negative index k where k ≤ 33, return the kth index row of
+//  the Pascal's triangle.
 //
 //  Note that the row index starts from 0.
 //
@@ -604,7 +665,7 @@ int findMin(vector<int>& nums) {
     while (start < end) {
         //  If the left is less than the right, we know this portion is sorted
         //      and can return nums[start]
-        if (nums[start] < nums[end]) return nums[start]; 
+        if (nums[start] < nums[end]) return nums[start];
         
         //  Begin looking at the middle between start and end
         int mid = (start + end)/2;
@@ -699,8 +760,9 @@ int majorityElement(vector<int>& nums){
 //
 //  ********* This solution originially passed all cases. When I retested it, it kept
 //  failing on one test case. To fix this issue, replace the 'valid' function call in
-//  'findSurroundingLand' with the criteria check used in 'valid'. I'm not sure why this
-//  caused the one test case to fail as the call to 'valid' should be constant. *********
+//  'findSurroundingLand' with the criteria check used in 'valid'. I'm not sure
+//  why this caused the one test case to fail as the call to 'valid' should be
+//  constant. *********
 //
 
 bool valid(const vector<vector<char>> grid, const int i, const int j){
@@ -754,25 +816,28 @@ int numIslands(vector<vector<char>>& grid) {
 //
 //  209. Minimum Size Subarray Sum - Medium
 //
-//  Given an array of n positive integers and a positive integer s, find the minimal length
-//  of a contiguous subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+//  Given an array of n positive integers and a positive integer s, find the
+//  minimal length of a contiguous subarray of which the sum ≥ s. If there isn't
+//  one, return 0 instead.
 //
 //  Big(O) -> O(n), where n = the size of the vector
 //  Memory -> O(1)
 //
-//  ********* Here I used the chasing two pointer method. Have a running sum of using a faster
-//  index and once our running sum becomes greater than or equal to the target, subtract
-//  from the running sum using the slower index. The difference between the fast and slow
-//  pointers given the length of the subarray. *********
+//  ********* Here I used the chasing two pointer method. Have a running sum of
+//  using a faster index and once our running sum becomes greater than or equal
+//  to the target, subtract from the running sum using the slower index. The
+//  difference between the fast and slow pointers given the length of the subarray.
+//  *********
 //
 
 int minSubArrayLen(int s, vector<int>& nums) {
-    //  Purpose: Find the smallest subarray that sums up to a number greater than or equal to s
+    //  Purpose: Find the smallest subarray that sums up to a number greater
+    //           than or equal to s
     //  Input:
     //      - s: An integer representing the minimum sum target we want to achieve
     //      - nums: A vector of integers
-    //  Output: An integer representing the smallest subarray size whose sum is greater than or
-    //          equal to s. If no such subarray exists, return 0.
+    //  Output: An integer representing the smallest subarray size whose sum is
+    //          greater than or equal to s. If no such subarray exists, return 0.
     int slow = 0, fast = 0;
     int n = (int)nums.size(), sum = 0;
     int smallestLength = INT_MAX;
@@ -801,7 +866,8 @@ int minSubArrayLen(int s, vector<int>& nums) {
 //  You may assume k is always valid, 1 ≤ k ≤ array's length.
 //
 //  Big(O) -> O(klogk + (n-k)logk), where n = size of the array
-//  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
+//  Memory -> O(k), where k = kth element. The heap should never be larger than
+//  this number.
 //
 
 int findKthLargest(vector<int>& nums, int k) {
@@ -828,8 +894,8 @@ int findKthLargest(vector<int>& nums, int k) {
 //
 //  Given an array of integers, find if the array contains any duplicates.
 //
-//  Your function should return true if any value appears at least twice in the array, and it should
-//  return false if every element is distinct.
+//  Your function should return true if any value appears at least twice in the
+//  array, and it should return false if every element is distinct.
 //
 //  Big(O) -> O(n), where n = size of the array.
 //  Memory -> O(n), where n = size of the array.
@@ -853,13 +919,15 @@ bool containsDuplicate(vector<int>& nums) {
 //
 //  230. Kth Smallest Element in a BST - Medium
 //
-//  Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+//  Given a binary search tree, write a function kthSmallest to find the kth
+//  smallest element in it.
 //
 //  Note:
 //  You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
 //
 //  Big(O) -> O(klogk + (n-k)logk), where n = size of the tree
-//  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
+//  Memory -> O(k), where k = kth element. The heap should never be larger than
+//  this number.
 //
 
 void pushValuesToHeap(TreeNode* root, priority_queue<int> &max_heap, const int k){
@@ -898,8 +966,8 @@ int kthSmallest(TreeNode* root, int k){
 //
 //  240. Search a 2D Matrix II - Medium
 //
-//  Write an efficent algorithm that searches for a value in an m x n matrix. This matrix has
-//  the following properties:
+//  Write an efficent algorithm that searches for a value in an m x n matrix.
+//  This matrix has the following properties:
 //  - Integers in each row are sorted in ascending from left to right.
 //  - Integers in each column are sorted in ascending from top to bottom.
 //
@@ -907,7 +975,7 @@ int kthSmallest(TreeNode* root, int k){
 //  Memory -> O(1)
 //
 
-bool searchMatrix(vector<vector<int>>& matrix, int target) {
+bool searchMatrixII(vector<vector<int>>& matrix, int target) {
     //  Purpose: Find if the target value is in the 2D vector
     //  Input:
     //      - matrix: A sorted 2D vector of integers. Each row and column are sorted
@@ -930,10 +998,11 @@ bool searchMatrix(vector<vector<int>>& matrix, int target) {
 //
 //  307. Range Sum Query - Mutable - Medium
 //
-//  Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j),
-//  inclusive.
+//  Given an integer array nums, find the sum of the elements between indices i
+//  and j (i ≤ j), inclusive.
 //
-//  The update(i, val) function modifies nums by updating the element at index i to val.
+//  The update(i, val) function modifies nums by updating the element at index i
+//  to val.
 //
 //  NumArray Big(O) -> O(n), where n = size of the array.
 //  update Big(O) -> O(n), where n = size of the array.
@@ -1026,7 +1095,8 @@ int findPath(vector<vector<int>> &matrix, int i, int j, int prevNum, vector<vect
 }
 
 int longestIncreasingPath(vector<vector<int>>& matrix) {
-    //  Purpose: Find the longest path where the next number is greater than the previous
+    //  Purpose: Find the longest path where the next number is greater than
+    //           the previous
     //  Input: A 2D vector of integers representing a grid
     //  Output: An integer representing the longest path of increasing numbers.
     if(matrix.size() == 0) return 0;
@@ -1075,13 +1145,15 @@ void reverseString(vector<char>& s) {
 //
 //  378. Kth Smallest Element in a Sorted Matrix - Medium
 //
-//  Given a n x n matrix where each of the rows and columns are sorted in ascending order, find
-//  the kth smallest element in the matrix.
+//  Given a n x n matrix where each of the rows and columns are sorted in ascending
+//  order, find the kth smallest element in the matrix.
 //
-//  Note that it is the kth smallest element in the sorted order, not the kth distinct element.
+//  Note that it is the kth smallest element in the sorted order, not the kth
+//  distinct element.
 //
 //  Big(O) -> O(klogk + (n-k)logk), where n = size of the matrix.
-//  Memory -> O(k), where k = kth element. The heap should never be larger than this number.
+//  Memory -> O(k), where k = kth element. The heap should never be larger than
+//            this number.
 //
 
 int kthSmallest(vector<vector<int>>& matrix, int k) {
@@ -1108,23 +1180,24 @@ int kthSmallest(vector<vector<int>>& matrix, int k) {
 //
 //  448. Find All Numbers Disappeared in an Array - Easy
 //
-//  Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear
-//  twice and others appear once.
+//  Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements
+//  appear twice and others appear once.
 //
 //  Find all the elements of [1, n] inclusive that do not appear in this array.
 //
-//  Could you do it without extra space and in O(n) runtime? You may assume the returned
-//  list does not count as extra space.
+//  Could you do it without extra space and in O(n) runtime? You may assume the
+//  returned list does not count as extra space.
 //
 //  Big(O) -> O(n), where n = the size of the vector
 //  Memory -> O(1), assuming the returned list does not count as extra space
 //
 
 void sortArray(vector<int> &nums){
-    //  Purpose: Because we know all elements are between 1 and n inclusive, we can swap
-    //           numbers into their corresponding index + 1 spot
+    //  Purpose: Because we know all elements are between 1 and n inclusive, we can
+    //           swap numbers into their corresponding index + 1 spot
     //  Input: An unsorted vector of integers
-    //  Output: No output but this function swaps values in nums until nums[i] == i + 1
+    //  Output: No output but this function swaps values in nums until
+    //          nums[i] == i + 1
     for(int i = 0; i < nums.size(); i++){
         while(nums[i] > 0 && nums[i] <= nums.size() && nums[nums[i] - 1] != nums[i]){
             swap(nums[i], nums[nums[i] - 1]);
@@ -1137,7 +1210,8 @@ void stepThroughArray(const vector<int> nums, vector<int> &missingNumbers){
     //  Input:
     //      - nums: For the most part, a sorted vector of integers
     //      - missingNumbers: An empty vector meant to hold missing numbers
-    //  Output: No output but this function pushes numbers where the value does not equal
+    //  Output: No output but this function pushes numbers where the value does
+    //          not equal
     //          the index + 1 in nums
     for(int i = 0; i < nums.size(); i++){
         if(i + 1 != nums[i]){
@@ -1159,15 +1233,17 @@ vector<int> findDisappearedNumbers(vector<int>& nums) {
 //
 //  463. Island Perimeter - Easy
 //
-//  You are given a map in form of a two-dimensional integer grid where 1 represents land
-//  and 0 represents water.
+//  You are given a map in form of a two-dimensional integer grid where 1 represents
+//  land and 0 represents water.
 //
-//  Grid cells are connected horizontally/vertically (not diagonally). The grid is completely
-//  surrounded by water, and there is exactly one island (i.e., one or more connected land cells).
+//  Grid cells are connected horizontally/vertically (not diagonally). The grid
+//  is completely surrounded by water, and there is exactly one island (i.e., one or
+//  more connected land cells).
 //
-//  The island doesn't have "lakes" (water inside that isn't connected to the water around
-//  the island). One cell is a square with side length 1. The grid is rectangular, width and
-//  height don't exceed 100. Determine the perimeter of the island.
+//  The island doesn't have "lakes" (water inside that isn't connected to the water
+//  around the island). One cell is a square with side length 1. The grid is
+//  rectangular, width and height don't exceed 100. Determine the perimeter of the
+//  island.
 //
 //  Big(O) -> O(m x n), where m and n represent the dimensions of the grid
 //  Memory -> O(1)
@@ -1175,7 +1251,8 @@ vector<int> findDisappearedNumbers(vector<int>& nums) {
 
 int islandPerimeter(vector<vector<int>>& grid){
     //  Purpose: Find the perimeter of land that touches water
-    //  Input: A 2D vector of integers of 0s and 1s that represent water and land respectively
+    //  Input: A 2D vector of integers of 0s and 1s that represent water and
+    //         land respectively
     //  Output: An integer indicating how much land touches water
     int land = 0, landOverlap = 0;
     
@@ -1198,9 +1275,9 @@ int islandPerimeter(vector<vector<int>>& grid){
 //
 //  509. Fibonacci Number - Easy
 //
-//  The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence,
-//  such that each number is the sum of the two preceding numbers, starting from 0 and 1. That is,
-//
+//  The Fibonacci numbers, commonly denoted F(n) form a sequence, called the
+//  Fibonacci sequence, such that each number is the sum of the two preceding
+//  numbers, starting from 0 and 1. That is,
 //  F(0) = 0, F(1) = 1
 //  F(N) = F(N - 1) + F(N - 1), for N > 1
 //
@@ -1229,8 +1306,8 @@ int fib(int N) {
 //
 //  530. Minimum Absolute Difference in BST - Easy
 //
-//  Given a binary search tree with non-negative values, find the minimum absolute difference
-//  between values of any two nodes.
+//  Given a binary search tree with non-negative values, find the minimum absolute
+//  difference between values of any two nodes.
 //
 //  Big(O) -> O(nlogn), where n = size of the tree
 //  Memory -> O(n), where n = size of the tree
@@ -1276,13 +1353,14 @@ int getMinimumDifference(TreeNode* root) {
 //
 //  605. Can Place Flowers - Easy
 //
-//  Suppose you have a long flowerbed in which some of the plots are planted and some are not.
-//  However, flowers cannot be planted in adjacent plots - they would compete for water and both
-//  would die.
+//  Suppose you have a long flowerbed in which some of the plots are planted and
+//  some are not.
+//  However, flowers cannot be planted in adjacent plots - they would compete for
+//  water and both would die.
 //
-//  Given a flowerbed (represented as an array containing 0 and 1, where 0 means empty and 1
-//  means not empty), and a number n, return if n new flowers can be planted in it without
-//  violating the no-adjacent-flowers rule.
+//  Given a flowerbed (represented as an array containing 0 and 1, where 0 means
+//  empty and 1 means not empty), and a number n, return if n new flowers can be
+//  planted in it without violating the no-adjacent-flowers rule.
 //
 //  Note:
 //  1. The input array won't violate no-adjacent-flowers rule.
@@ -1296,8 +1374,8 @@ int getMinimumDifference(TreeNode* root) {
 bool canPlaceFlowers(vector<int>& flowerbed, int n) {
     //  Purpose: See if we can insert n amount of flowers into the vector
     //  Input:
-    //      - flowerbed: A vector of integers of 0s and 1s where 0 represents dirt and
-    //                   1 represents a flower
+    //      - flowerbed: A vector of integers of 0s and 1s where 0 represents dirt
+    //                   and 1 represents a flower
     //      - n: An integer representing the number of flowers we wish to plant
     //  Output: A boolean if we can at least plant n amount of flowers
     flowerbed.insert(flowerbed.begin(),0); // add 0 at the beginning
@@ -1311,16 +1389,17 @@ bool canPlaceFlowers(vector<int>& flowerbed, int n) {
         }
         i++;
     }
-    //  It's not entirely clear in the original problem statement, but you can plant more 
-    //  than n times and still return true
-    return n <= 0; 
+    //  It's not entirely clear in the original problem statement, but you can
+    //  plant more than n times and still return true
+    return n <= 0;
 }
 
 //
 //  643. Maximum Average Subarray I - Easy
 //
-//  Given an array consisting of n integers, find the contiguous subarray of given length k that
-//  has the maximum average value. And you need to output the maximum average value.
+//  Given an array consisting of n integers, find the contiguous subarray of given
+//  length k that has the maximum average value. And you need to output the maximum
+//  average value.
 //
 //  Big(O) -> O(n), where n = size of the array.
 //  Memory -> O(1)
@@ -1363,12 +1442,12 @@ double findMaxAverage(vector<int>& nums, int k) {
 //
 //  695. Max Area of Island - Medium
 //
-//  Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land)
-//  connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid
-//  are surrounded by water.
+//  Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's
+//  (representing land) connected 4-directionally (horizontal or vertical.) You may
+//  assume all four edges of the grid are surrounded by water.
 //
-//  Find the maximum area of an island in the given 2D array. (If there is no island, the maximum
-//  area is 0.)
+//  Find the maximum area of an island in the given 2D array. (If there is no
+//  island, the maximum area is 0.)
 //
 //  Big(O) -> O(n x m), where n and m are the dimensions of the grid.
 //  Memory -> O(1)
@@ -1376,7 +1455,8 @@ double findMaxAverage(vector<int>& nums, int k) {
 //  ********* This solution originially passed all cases. When I retested it, it kept
 //  failing on one test case. To fix this issue, replace the 'valid' function call in
 //  'countArea' with the criteria check used in 'valid'. I'm not sure why this
-//  caused the one test case to fail as the call to 'valid' should be constant. *********
+//  caused the one test case to fail as the call to 'valid' should be constant.
+//  *********
 //
 
 bool valid(const vector<vector<int>> grid, const int x, const int y){
@@ -1431,9 +1511,9 @@ int maxAreaOfIsland(vector<vector<int>>& grid) {
 //
 //  704. Binary Search - Easy
 //
-//  Given a sorted (in ascending order) integer array nums of n elements and a target value,
-//  write a function to search target in nums. If target exists, then return its index,
-//  otherwise return -1.
+//  Given a sorted (in ascending order) integer array nums of n elements and a
+//  target value, write a function to search target in nums. If target exists, then
+//  return its index, otherwise return -1.
 //
 //  Note:
 //  1. You may assume that all elements in nums are unique
@@ -1466,11 +1546,12 @@ int search(vector<int>& nums, int target) {
 //
 //  746. Min Cost Climbing Stairs - Easy
 //
-//  On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed).
+//  On a staircase, the i-th step has some non-negative cost cost[i] assigned (0
+//  indexed).
 //
-//  Once you pay the cost you can either climb one or two steps. You need to find minimum cost
-//  to reach the top of the floor, and you can either start from the step with index 0, or
-//  the step with index 1.
+//  Once you pay the cost you can either climb one or two steps. You need to find
+//  minimum cost to reach the top of the floor, and you can either start from the
+//  step with index 0, or the step with index 1.
 //
 //  Note:
 //  1. cost will have a length in range [2, 1000].
@@ -1500,21 +1581,23 @@ int minCostClimbingStairs(vector<int>& cost) {
 //
 //  771. Jewels and Stones - Easy
 //
-//  You're given strings J representing the types of stones that are jewels, and S representing
-//  the stones you have. Each character in S is a type of stone you have. You want to know how many
-//  of the stones you have are also jewels.
+//  You're given strings J representing the types of stones that are jewels, and S
+//  representing the stones you have. Each character in S is a type of stone you
+//  have. You want to know how many of the stones you have are also jewels.
 //
-//  The letters in J are guaranteed distinct, and all characters in J and S are letters. Letters
-//  are case sensitive, so "a" is considered a different type of stone from "A".
+//  The letters in J are guaranteed distinct, and all characters in J and S are
+//  letters. Letters are case sensitive, so "a" is considered a different type of
+//  stone from "A".
 //
 //  Note:
 //  - S and J will consist of letters nad have length at most 50.
 //  - The characters in J are distinct.
 //
-//  Big(O) -> O(j + s), where j and s are the sizes of strings 'J' and 'S' respectively.
-//  Memory -> O(1), we know 'stones' will never exceed more than 58 (2*26) entries. We also know the
-//                  lengths of either string will not exceed 50, so we can consider the space
-//                  complexity to be constant.
+//  Big(O) -> O(j + s), where j and s are the sizes of strings 'J' and 'S'
+//            respectively.
+//  Memory -> O(1), we know 'stones' will never exceed more than 58 (2*26) entries.
+//            We also know the lengths of either string will not exceed 50, so we
+//            can consider the space complexity to be constant.
 //
 
 int numJewelsInStones(string J, string S) {
@@ -1540,34 +1623,37 @@ int numJewelsInStones(string J, string S) {
 //
 //  787. Cheapest Flights Within K Stops - Medium
 //
-//  There are n cities connected by m flights. Each flights starts from city u and arrives at v with
-//  price w.
+//  There are n cities connected by m flights. Each flights starts from city u and
+//  arrives at v with price w.
 //
-//  Now given all the cities and flights, together with starting city src and the destination dst,
-//  your task is to find the cheapest price from src to dst with up to k stops. If there is no
-//  such route, output -1.
+//  Now given all the cities and flights, together with starting city src and the
+//  destination dst, your task is to find the cheapest price from src to dst with up
+//  to k stops. If there is no such route, output -1.
 //
 //  Note:
-//  - The number of nodes n will be in range [1, 100], with nodes labeled from 0 to n - 1.
+//  - The number of nodes n will be in range [1, 100], with nodes labeled from 0 to
+//    n - 1.
 //  - The size of flights will be in range [0, n * (n - 1) / 2].
 //  - The format of each flight will be (src, dst, price).
 //  - The price of each flight will be in the range [1, 10000].
 //  - k is in the range of [0, n - 1].
 //  - There will not be any duplicated flights or self cycles.
 //
-//  Big(O) -> O(c*r), where c and r are the number of cities and number of routes between
-//            the cities
+//  Big(O) -> O(c*r), where c and r are the number of cities and number of routes
+//            between the cities
 //  Memory -> O(c), where c is the number of cities
 //
 
 void flightPlan(unordered_map<int, vector<pair<int,int>>> &flightDestinations, const vector<vector<int>> flights){
     //  Purpose: Create a hash map for the different routes from a city and its cost
     //  Input:
-    //      - flightDestinations: An empty hash map. Its key is an int representing a city and its value is
-    //                            vector of pairs of ints. First int of pair is the destination and
-    //                            the second int is the cost
+    //      - flightDestinations: An empty hash map. Its key is an int representing
+    //                            a city and its value is vector of pairs of ints.
+    //                            First int of pair is the destination and the
+    //                            second int is the cost
     //      - flights: A 2D vector of ints
-    //  Output: No output but function populates flightDestinations via pass-by-reference
+    //  Output: No output but function populates flightDestinations via
+    //          pass-by-reference
     for(auto flight: flights){
         flightDestinations[flight[0]].emplace_back(flight[1], flight[2]);
     }
@@ -1576,7 +1662,8 @@ void flightPlan(unordered_map<int, vector<pair<int,int>>> &flightDestinations, c
 void flyRoute(unordered_map<int, vector<pair<int,int>>> flightDestinations, const int routes, queue<pair<int,int>> &differentRoutes, const int dst, int &cheapest){
     //  Purpose: Fly through all the route options
     //  Input:
-    //      - flightDestinations: Hash map of cities to its destinations with current cost
+    //      - flightDestinations: Hash map of cities to its destinations with
+    //                            current cost
     //      - routes: An integer representing how many flights to look through
     //      - differentRoutes: A queue that holds all routes from the previous city
     //      - dst: An integer representing the destination city
@@ -1604,7 +1691,8 @@ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int
     //  Purpose: Find the cheapest route from source location to destination
     //  Input:
     //      - n: An integer representing the number of cities
-    //      - flights: A 2D vector of flights. Each vector looks like {src, dst, cost}
+    //      - flights: A 2D vector of flights. Each vector looks like {src, dst,
+    //                 cost}
     //      - src: An integer representing the starting city
     //      - dst: An integer representing the final city
     //      - K: An integer reprsenting how many "layovers" are allowed between
@@ -1632,14 +1720,16 @@ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int
 //
 //  807. Max Increase to Keep City Skyline - Medium
 //
-//  In a 2 dimensional array grid, each value grid[i][j] represents the height of a building located
-//  there. We are allowed to increase the height of any number of buildings, by any amount (the
-//  amounts can be different for different buildings). Height 0 is considered to be a building
-//  as well.
+//  In a 2 dimensional array grid, each value grid[i][j] represents the height of a
+//  building located there. We are allowed to increase the height of any number of
+//  buildings, by any amount (the amounts can be different for different buildings).
+//  Height 0 is considered to be a building as well.
 //
-//  At the end, the "skyline" when viewed from all four directions of the grid, i.e. top, bottom,
-//  left, and right, must be the same as the skyline of the original grid. A city's skyline is
-//  the outer contour of the rectangles formed by all the buildings when viewed from a distance.
+//  At the end, the "skyline" when viewed from all four directions of the grid, i.e.
+//  top, bottom, left, and right, must be the same as the skyline of the original
+//  grid. A city's skyline is the outer contour of the rectangles formed by all the
+//  buildings when viewed from a distance.
+//
 //  See the following example.
 //
 //  What is the maximum total sum that the height of the buildings can be increased?
@@ -1666,8 +1756,8 @@ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int
 //  Notes:
 //  - 1 < grid.length = grid[0].length <= 50
 //  - All heights grid[i][j] are in the range [0, 100]
-//  - All buildings in grid[i][j] occupy the entire grid cell, that is, they are 1 x 1 x grid[i][j]
-//    rectangular prism.
+//  - All buildings in grid[i][j] occupy the entire grid cell, that is, they are 1 x
+//    1 x grid[i][j] rectangular prism.
 //
 //  Big(O) -> O(n^2), where n is the product of the rows and columns of the grid.
 //  Memory -> O(n), where n is the size of a given row or column
