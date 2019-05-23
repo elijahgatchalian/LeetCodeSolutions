@@ -1,15 +1,14 @@
-//
-//  Eli Gatchalian
-//  LeetCodeSolutions
-//
-//  Copyright © 2019 Eli Gatchalian. All rights reserved.
-//
-//
-//  Hi everyone! I'm a software engineer and I decided to compile my solutions to
-//  some of the problems posted on leetcode.com using C++. I have provided time
-//  and space complexity for each problem. Feel free to message me if you see
-//  something confusing or wrong!
-//
+/*
+ Eli Gatchalian
+ LeetCodeSolutions
+
+ Copyright © 2019 Eli Gatchalian. All rights reserved.
+
+ Hi everyone! I'm a software engineer and I decided to compile my solutions to
+ some of the problems posted on leetcode.com using C++. I have provided time
+ and space complexity for each problem. Feel free to message me if you see
+ something confusing or wrong!
+*/
 
 //  Definition for singly-linked list.
 struct ListNode {
